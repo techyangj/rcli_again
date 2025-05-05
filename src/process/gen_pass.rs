@@ -1,6 +1,6 @@
 use anyhow::Result;
 use rand::Rng;
-
+use zxcvbn::zxcvbn;
 const UPPER: &[u8] = b"ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 const LOWER: &[u8] = b"abcdefghijklmnopqrstuvwxyz";
 const NUMBER: &[u8] = b"0123456789";
@@ -36,5 +36,8 @@ pub fn process_genpass(
     }
 
     println!("{}", password);
+    // output password strength in stderr
+    let estimate = zxcvbn(&password, &[]);
+    eprintln!("password strength: {}", estimate.score());
     Ok(())
 }
